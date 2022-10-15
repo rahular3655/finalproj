@@ -1,24 +1,16 @@
 import datetime
-from email.headerregistry import Address
 from turtle import home
 from django.shortcuts import render,redirect
 from cart.models import *
-from extra.models import CouponUsedUser
-from userprofile.models import shippingaddress
 from .models import *
-from products.views import store
 from .forms import OrderForm
 from products.models import *
 import json
 from django.http import JsonResponse
-from django.http import HttpResponse
 from shoeieeproj.views import home
 import razorpay
-from django.db.models import Sum
 from django.views.decorators.cache import cache_control
 from django.conf import settings
-from django.template.loader import get_template
-from xhtml2pdf import pisa
 
 # Create your views here.
 

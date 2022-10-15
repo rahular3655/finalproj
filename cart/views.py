@@ -1,14 +1,6 @@
-from datetime import date
-from pickle import GLOBAL
-from sre_constants import SUCCESS
 from django.http import HttpResponse
 
-import json
-from django.http import JsonResponse
-from multiprocessing import context, reduction
-from turtle import home
 from django.contrib import messages
-from urllib import request
 from django.shortcuts import render,redirect,get_object_or_404
 from products.models import *
 from .models import *
@@ -16,7 +8,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from userprofile.models import *
 from order.models import *
-from django.db.models import Q
 
 
 # Create your views here.

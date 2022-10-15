@@ -1,5 +1,3 @@
-from tkinter import E
-from unicodedata import category
 from django.shortcuts import render, get_object_or_404
 
 from cart.views import _cart_id
@@ -11,8 +9,7 @@ from .models import Product
 from categories.models import Categories
 from cart.models import *
 from cart.views import *
-from django.http import HttpResponse
-from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
+from django.core.paginator import Paginator
 from django.views.decorators.cache import cache_control
 
 

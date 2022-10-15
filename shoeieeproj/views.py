@@ -1,5 +1,4 @@
-from urllib import request
-from django .shortcuts import render, redirect
+from django .shortcuts import render
 from products.models import *
 from django.views.decorators.cache import cache_control
 

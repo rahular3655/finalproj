@@ -1,11 +1,5 @@
 from datetime import datetime
-import imp
-from optparse import Values
-from unicodedata import category
-from urllib import request
 from django.shortcuts import render,redirect
-import email
-from ast import If,Return
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
@@ -15,12 +9,10 @@ from categories.models import Categories
 from order.models import Order, OrderProduct, Payment
 from products.models import Product, Variation
 from extra.models import Coupon, OfferCategory, OfferProduct
-from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
-from shoeieeproj.utils import render_to_pdf
+from django.core.paginator import Paginator
 from django.template.loader import get_template
 from django.db.models import Q
-from django.db.models import Count, Sum
-from datetime import date
+from django.db.models import Sum
 import datetime
 from xhtml2pdf import pisa
 import xlwt
@@ -715,7 +707,6 @@ def download_csv(request):
 
 
 
-from urllib import response
 
 def download_excel(request):
     response = HttpResponse(content_type = 'application/ms-excel')
