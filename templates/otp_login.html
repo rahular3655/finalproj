@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content%}
+
+<section class="signin-page account">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="block text-center">
+          <a class="logo" href="index.html">
+            <img src="images/logo.png" alt="">
+          </a>
+          {% include 'includes/alerts.html' %}
+          <h5 class="text-bg-danger" style="display:none ;" id="warning">Invalid Credentials</h5>
+          <h2 class="text-center"></h2>
+          <form class="text-left clearfix" action="{% url 'otp_login' phone_number %}" method="POST" id="otp_form">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="text" class="form-control"  placeholder="Enter otp" name='otp' id='otp' value="">
+              <input type="text" class="form-control" style="display:none;" placeholder="Enter otp" name='phone_number' id='phone_number' value="{{ phone_number }}">
+            </div>
+            
+            <div class="text-center">
+              <button type="submit" class="btn btn-main text-center" >Submit</button>
+            </div>
+          </form>
+      
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  $(document).on('submit', '#otp_form', function (e) {
+		e.preventDefault();
+		var otp = $('#otp').val()
+    var phone_number = $('#phone_number').val()
+		
+    console.log(otp)
+    console.log(phone_number)
+
+		$.ajax({
+      
+			type: 'POST',
+			url: '{{otp_login}}',
+			dataType: 'json',
+			data: {
+        'otp' : otp,
+				
+				
+				csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+			},
+			success: function (responce) {
+				console.log(responce)
+				if (responce.success == true) {
+					document.getElementById("otp").value="";
+					document.getElementById("otp").placeholder = "Invalid OTP";
+					document.getElementById("otp").style.border = "solid red 1px";
+				}
+        else if (responce.success == false) {
+					document.getElementById("otp").value="";
+					document.getElementById("otp").placeholder = "Invalid Phone Number";
+					document.getElementById("otp").style.border = "solid red 1px";
+				}
+        else if (responce.phone == false) {
+					document.getElementById("otp").value="";
+					document.getElementById("otp").placeholder = "Invalid OTP";
+					document.getElementById("otp").style.border = "solid red 1px";
+				}
+        else if (responce.phone == true) {
+          console.log(responce)
+          setTimeout(function(){
+            window.location.replace("{% url 'home' %}");
+  
+            }, 1500)
+            
+            Swal.fire({
+              toast: true,
+              icon: 'success',
+              title: 'Logged in successfully',
+              animation: false,
+              position: 'top-right',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+            })
+				}
+			}
+		})
+
+
+	})
+	
+</script>
+
+
+{% comment %} 
+<div id="otpEmployeeModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="{% url 'otp_login'%}" method="POST"  id="otp_login" >
+        {% csrf_token %}
+        <div class="modal-header">						
+          <h4 class="modal-title"><p class="mt-20"><a href="">Wait and Proceed</a></p></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">					
+          <div class="form-group">
+            <label>OTP</label>
+            <input name="otp" id="otp" type="text" class="form-control" required>
+          
+          </div>           
+        </div>
+        <div class="modal-footer">
+          
+          <input type="submit" class="btn btn-success" value="Login">
+        </div>
+      </form>
+    </div>
+  </div>
+</div> {% endcomment %}
+
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+
+{% endblock %}

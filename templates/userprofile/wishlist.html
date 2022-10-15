@@ -1,0 +1,37 @@
+{% extends '../userprofile/base.html' %}
+{% block sub_content %}
+
+<div class="col-lg-12 col-xl-8 m-lr-auto m-b-50">
+    <div class="m-l-25 m-r--38 m-lr-0-xl">
+        <div class="wrap-table-shopping-cart">
+            {% if not wishlist %}
+            <h3> Wishlist is empty </h3>
+            {% else %}
+            <table class="table-shopping-cart">
+                <tr class="table_head">
+                    <th class="column-1"></th>
+                    <th class="column-2">Product</th>
+                    <th class="column-3">Price</th>
+                </tr>
+                <tr class="table_row">
+                    <td class="column-1">
+                        {% for wish in wishlist %}
+                        <input type="hidden" value="{{wish.id}}" class="prod_id">
+                        <div class="how-itemcart1">
+                            <a href='{{ wish.wished_product.get_url }}'><img style="height:100px;width:100px; " src="{{ wish.wished_product.image1.url }}" alt="IMG"></a>
+                        </div>
+                    </td>
+                    <td class="column-2">{{wish.wished_product.product_name}}</td>
+                    <td class="column-3">{{wish.wished_product.price}}</td>
+                    <td class="column-4">{{ cart_item.sub_total }}</td>
+                    <td><a href="{% url 'remove_from_wishlist' wish.id %}" type="button" class="btn btn-outline-warning">Remove From wishlist</a></td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

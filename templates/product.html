@@ -1,0 +1,76 @@
+{% extends 'adminbase.html' %}
+
+{% block content %}
+
+<td><a href="{% url 'addproduct'%}"><button type="submit" class="btn btn-warning">Add Product</button></a></td>
+
+<div class="table-responsive bg-black">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          
+          <th scope="col">price</th>
+          <th scope="col">stock</th>
+          <th scope="col">category</th>
+          <th scope="col">image</th>
+
+        </tr>
+      </thead>
+      <tbody>
+      {% for x in theproduct %}
+        <tr>
+          <th scope="row"> {{x.id}}</th>
+          <td>{{x.product_name |lower}}</td>
+          
+          <td>{{x.price}}</td>
+          <td>{{x.stock}}</td>
+          <td>{{x.category}}</td>
+
+          <td><img src="{{x.image.url}}" alt="" class="img-fluid img-thumbnail" style="width:140px; height:160px"></td>
+          <td><a href="editproduct/{{ x.id }}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
+          <td><button onclick="deleteproduct({{ x.id }})" class="btn btn-danger">Delete</button></td>
+          
+        </tr>
+        {% endfor %}
+
+      </tbody>
+      
+    </table>
+    
+    </div>
+    
+    </nav>
+  </div>
+  <script>
+
+
+
+    function deleteproduct(product_id){
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this item!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          window.location.href = "../adminprev/deleteproduct/"+product_id
+  
+          swal("Done! Your item has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your item is safe!");
+        }
+      });
+  
+  
+  
+  
+    }
+  </script>
+
+{% endblock %}

@@ -1,0 +1,409 @@
+
+{% extends 'base.html' %}
+    {% block content %}
+<div class="container-fluid">
+    <div class="row d-flex justify-content-center mt-5 robotothin">
+        <div class="col-md-8 col-sm-12 col-12">
+          <div class="row">
+            <div class="col-md-8 mb-3">
+              {% if user_address_status %}
+
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onchange="handleChange(this);" value="1"  checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Use Default Home Address
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" onchange="handleChange(this);" value="2"  id="flexRadioDefault2" >
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Use Another Address
+                </label>
+              </div>
+              {% else %}
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Default Home Address not availble
+                </label>
+              </div>
+              {% endif %}
+            </div>
+            
+          </div>
+            <div class="row">
+                <div class="col-md-8 mb-4">
+                  <div class="card mb-4">
+                    <div class="card-header py-3">
+                      <h5 class="mb-0">Biling details</h5>
+                    </div>
+                    <div class="card-body">
+                      <form method="POST" action="{% url 'place_order' %}">
+                        {% csrf_token %}
+                        <!-- 2 column grid layout with text inputs for the first and last names -->
+                        <div class="row mb-4">
+                          <div class="col">
+                            <div class="form-outline">
+                              <input type="text" name="first_name" id="form6Example1" class="form-control" value="{{user.first_name}}" required/>
+                              <label class="form-label" for="form6Example2">First name</label>
+                            </div>
+                          </div>
+                          <div class="col">
+                            <div class="form-outline">
+                              <input type="text" name="last_name" id="form6Example2" class="form-control" value="{{user.last_name}}"  required />
+                              <label class="form-label" for="form6Example2">Last name</label>
+                            </div>
+                          </div>
+                        </div>
+              
+                        <!-- Text input -->
+                        <div class="form-outline mb-4">
+                          <input type="number"  name="phone" id="form6Example3" class="form-control" value="{{user.phonenumber}}"  required/>
+                          <label class="form-label" for="form6Example3">Phone</label>
+                        </div>
+              
+                        <!-- Text input -->
+                        <div class="form-outline mb-4">
+                          <input type="text" name="address_line_1" id="add_line_1_id" class="form-control" value="{{user_address.address_line_1}}" required/>
+                          <label class="form-label" for="form6Example4">Address Line 1</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                          <input type="text" name="address_line_2" id="add_line_2_id" class="form-control" value="{{user_address.address_line_2}}"  required/>
+                          <label class="form-label" for="form6Example4">Address Line 2</label>
+                        </div>
+              
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                          <input type="email" name="email" id="form6Example5" class="form-control" value="{{user.email}}"  required/>
+                          <label class="form-label" for="form6Example5">Email</label>
+                        </div>
+              
+                        <!-- Number input -->
+                        <div class="form-outline mb-4">
+                          <input type="text" name="country" id="country_id" class="form-control" value="{{user_address.country}}"  required/>
+                          <label class="form-label" for="form6Example6">Country</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                          <input type="text" name="state" id="state_id" class="form-control" value="{{user_address.state}}"  required/>
+                          <label class="form-label" for="form6Example7">State</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                          <input type="text" name="city" id="city_id" class="form-control" value="{{user_address.city}}"  required/>
+                          <label class="form-label" for="form6Example8">City</label>
+                        </div>
+                        <div class="form-outline mb-4">
+                          <input type="number" name="pincode" id="zipcode_id" class="form-control" value="{{user_address.pincode}}"  required/>
+                          <label class="form-label" for="form6Example9">Zipcode</label>
+                        </div>
+
+                        
+                        <!-- Message input -->
+                        
+              
+                        <!-- Checkbox -->
+                        
+                      
+                    </div>
+                  </div>
+                </div>
+                
+              
+                <div class="col-md-4 mb-4">
+                  
+                  <div class="card mb-4">
+                    <div class="card-header py-3">
+                      <h5 class="mb-0">Summary</h5>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item w-100 d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                            <div>
+                              <strong>Total amount</strong>
+                              <strong>
+                                <p class="mb-0"></p>
+                              </strong>
+                            </div>
+                            <span><strong>{{total}}&nbsp ₹</strong></span>
+                          </li>
+                        <li class="list-group-item w-100 d-flex justify-content-between align-items-center px-0">
+                          
+                          <span>Shipping Charge</span>
+                          <span class="mb-0"> 0 ₹</span>
+                        </li>
+                        <li id="coupon_discount_id" class="list-group-item w-100 d-flex justify-content-between align-items-center px-0">
+                          
+                          <span>Coupon Discount</span>
+                          <span class="mb-0"> {{reduction}}% | {{reduced_price}}</span>
+                        </li>
+                        <li id="carttotalprice_id" class="list-group-item w-100 d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                          <div>
+                            <strong>Total amount</strong>
+                            <strong>
+                              <p class="mb-0">(including Shipping charge)</p>
+                            </strong>
+                          </div>
+                          <span><strong>{{grand_total}}&nbsp ₹</strong></span>
+                        </li>
+                      </ul>
+                      <div class="card">
+                        <h5 class="card-header">Payment Method</h5>
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" value="Paypal" id="flexRadio" >
+                                <label class="form-check-label" for="flexRadioDisabled">
+                                  Paypal
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" value="Cod" id="flexRadioChecked" checked >
+                                <label class="form-check-label" for="flexRadioCheckedDisabled">
+                                  Cash On Delivery
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" value="Razorpay" id="flexRadioChecked" >
+                                <label class="form-check-label" for="flexRadioCheckedDisabled">
+                                  Razor Pay
+                                </label>
+                              </div>
+    
+                        </div>
+                    </div>
+              <div class="col-12 mt-3 d-flex justify-content-center">
+
+                <button type="submit" class="btn btn-primary rounded-0">
+                  CheckOut
+                </button>
+              </div>
+                     
+
+                    </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    
+</div>
+<div class="card mb-4" >
+  <div class="card-header py-3">
+    <h5 class="mb-0">Coupon</h5>
+  </div>
+  {% if 'coupon_code' in request.session %}
+  <div class="card-body">
+    <h6><p>Applied coupon</p></h6>
+    <input style="color:red;" type="text" placeholder="Coupon Code" name="coupon_code" value="{{ coupon_code }}" disabled>
+</div>
+  {% else %}
+  <form method="POST" action="{% url 'apply_coupon' %}">
+    {% csrf_token %}
+  <div class="card-body">
+      <input id="coupon_code" type="text" placeholder="Coupon Code" name="coupon_code">
+      <button id="button_coupon_id" type='submit' class="btn-outline-dark" >Apply</button>
+  </div>
+</form>
+{% endif %}
+  <br>
+</div> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  var address_line_1 = document.getElementById("add_line_1_id").value
+  var address_line_2 = document.getElementById("add_line_2_id").value
+  var country = document.getElementById("country_id").value
+  var state = document.getElementById("state_id").value
+  var city = document.getElementById("city_id").value
+  var zipcode = document.getElementById("zipcode_id").value
+  
+  function handleChange(src) {
+    radio_value=src.value;
+    if(radio_value==1){
+      //default saved home address
+      document.getElementById("add_line_1_id").value=address_line_1;
+      document.getElementById("add_line_2_id").value=address_line_2;
+      document.getElementById("country_id").value=country;
+      document.getElementById("state_id").value=state;
+      document.getElementById("city_id").value=city;
+      document.getElementById("zipcode_id").value=zipcode;
+    }
+    else{
+      document.getElementById("add_line_1_id").value=""
+      document.getElementById("add_line_2_id").value=""
+      document.getElementById("country_id").value=""
+      document.getElementById("state_id").value=""
+      document.getElementById("city_id").value=""
+      document.getElementById("zipcode_id").value=""
+     
+
+
+    }
+
+    }
+</script>
+{% comment %} <script>
+   function handleChange(src) {
+   
+   var f_name = document.getElementById("f_name" + src).value
+   var l_name = document.getElementById("l_name" + src).value
+   var emaill = document.getElementById("emaill" + src).value
+   var p_number = document.getElementById("p_number" + src).value
+   var address1 = document.getElementById("address1" + src).value
+   var address2 = document.getElementById("address2" + src).value
+   var f_state = document.getElementById("f_state" + src).value
+   var f_city = document.getElementById("f_city" + src).value
+   var f_country = document.getElementById("f_country" + src).value
+   
+   
+       //default saved home address
+       if(src){
+       document.getElementById("first_name").value=f_name;
+       document.getElementById("last_name").value=l_name;
+       document.getElementById("email").value=emaill;
+       document.getElementById("phone_number").value=p_number;
+       document.getElementById("address_line_1").value=address1;
+       document.getElementById("address_line_2").value=address2;
+       document.getElementById("state").value=f_state;
+       document.getElementById("city").value=f_city;
+       document.getElementById("country").value=f_country;
+     }
+    
+   }
+
+
+	$(document).on('submit', '#coupon', function (e) {
+		e.preventDefault();
+		var coupon_code = $('#coupon_code').val()
+		
+
+		$.ajax({
+			method: "GET",
+			url: "coupon",
+			dataType: 'json',
+			data: {
+		
+            'coupon_code' : coupon_code,
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+			},
+			success: function (response) {
+				console.log(response)
+				if (response.success == true) {
+					setTimeout(function(){
+                  window.location.replace('{{checkout}}');
+        
+                  }, 1500)
+                  
+                  Swal.fire({
+                    toast: true,
+                    icon: 'success',
+                    title: 'Coupon Applied Successfully',
+                    animation: false,
+                    position: 'top-right',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                  })
+				} 
+            else if (response.coupon_valid == false) {
+               document.getElementById("coupon_code").value="";
+               document.getElementById("coupon_code").placeholder = "Not a valid coupon";
+               document.getElementById("coupon_code").style.border = "solid red 1px";
+            }
+				
+				else if (response.success == false) {
+               document.getElementById("coupon_code").value="";
+               document.getElementById("coupon_code").placeholder = "Coupon expired";
+               document.getElementById("coupon_code").style.border = "solid red 1px";
+            }
+            else if (response.coupon_valid == true) {
+               document.getElementById("coupon_code").value="";
+               document.getElementById("coupon_code").placeholder = "Not Post";
+               document.getElementById("coupon_code").style.border = "solid red 1px";
+            }
+            else if (response.coupon_exist == true) {
+               document.getElementById("coupon_code").value="";
+               document.getElementById("coupon_code").placeholder = "This coupon is currently applied";
+               document.getElementById("coupon_code").style.border = "solid red 1px";
+            }
+            else if (response.coupon_exist == false) {
+               document.getElementById("coupon_code").value="";
+               document.getElementById("coupon_code").placeholder = "This coupon is currently applied";
+               document.getElementById("coupon_code").style.border = "solid red 1px";
+            }
+            else if (response.already == true) {
+               document.getElementById("coupon_code").value="";
+               document.getElementById("coupon_code").placeholder = "Coupon applied once";
+               document.getElementById("coupon_code").style.border = "solid red 1px";
+            }
+            else if (response.exist == false) {
+               document.getElementById("coupon_code").value="";
+               document.getElementById("coupon_code").placeholder = "Not a valid Coupon";
+               document.getElementById("coupon_code").style.border = "solid red 1px";
+            }
+			}
+		})
+
+
+	});
+</script> {% endcomment %}
+{% comment %} <script>
+  var Grandtotal="{{ total }}"
+  
+  var di="{{request.session.coupon_discount}}"
+  var di=parseInt(di)
+  
+  var coupon_code
+  var coupon_discount
+  
+
+    function couponCheck(){
+      var xhttp=new XMLHttpRequest();
+      console.log(Grandtotal)
+      var coupon_code = document.getElementById("coupon_code").value;
+      console.log(coupon_code)
+      if(coupon_code.length==0){
+        document.getElementById("coupon_code").style.borderColor="red";
+      }
+      else{
+        document.getElementById("coupon_code").style.borderColor="#deee2e6"
+        senddata()
+      }
+
+      function senddata(){
+        xhttp.onload = function(){
+          var discount = this.responseText;
+          var di = discount
+          console.log("##")
+          console.log(di)
+          console.log(Grandtotal)
+          if (discount==0){
+            Swal.fire('Invalid Coupon code','',error)
+            document.getElementById("coupon_code_id").innerHTML="Coupon"
+            document.getElementById("coupon_discount_id").innerHTML="-"+"0"
+            document.getElementById("carttotalprice_id").innerHTML = Grandtotal-discount+"&nbsp"
+          }
+          else{
+            Swal.fire({
+              position:'top-end',
+              icons:'success',
+              title:'Hurray You will get a discount of ' + discount,
+              showConfirmButton: false,
+              timer:1500
+            })
+            document.getElementById("coupon_code_id").innerHTML=coupon_code
+            document.getElementById("coupon_discount_id").innerHTML="-"+discount+"&nbsp"
+            document.getElementById("carttotalprice_id").innerHTML=Grandtotal-discount+"&nbsp"
+            console.log(Grandtotal-discount)
+            setTimeout(function(){
+              location.reload();
+            },2000)
+          }
+        }
+      }xhttp.open("GET", "couponCheck/"+coupon_code);
+      xhttp.send();
+    }
+</script> {% endcomment %}
+
+  
+            {% endblock %}

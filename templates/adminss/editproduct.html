@@ -1,0 +1,63 @@
+{% extends 'adminss/adminbase.html' %}
+
+{% block content %}
+
+
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-12 col-xl-8">
+            <div class="bg-secondary rounded h-100 p-4 " style="margin-left: 150px;margin-top: 75px;">
+                <h6 class="mb-4">Basic Form</h6>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                  <div class="form-group">
+                    <label for="">Name</label>
+                    <input type="text" class="form-control" id="" value="{{product.product_name}}" placeholder="Name" name="name" >
+                  </div>
+                  <div class="form-group">
+                    <label for="">Description</label>
+                    <input type="text" class="form-control" id="" value="{{product.description}}" placeholder="Description" name="description" >
+                  </div>
+                  <div class="form-group">
+                    <label for="">Price</label>
+                    <input type="number" class="form-control" id="" value="{{product.price}}" placeholder="Price" name="price" >
+                  </div>
+                  <div class="form-group">
+                    <label for="">Stock</label>
+                    <input type="number" class="form-control" id="" value="{{product.stock}}" placeholder="Stock" name="stock" >
+                  </div>
+                  <div class="form-group">
+                    <label for="">Category</label>
+                    <div class="form-group">
+                      <select class="form-select mb-3" aria-label="Default select example" value={{product.category}} name="category">
+                        {% for category in values %}
+                        <option value="{{category.id}}" >{{category.category_name}}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Main Image</label>
+                    <input class="form-control bg-dark" value="{{product.image.url}}" type="file" id="" name = "image">
+                  </div>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Image 2</label>
+                    <input class="form-control bg-dark" type="file" id="" name = "image1">
+                  </div>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Image 3</label>
+                    <input class="form-control bg-dark" type="file" id="" name = "image2">
+                  </div>
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Image 4</label>
+                    <input class="form-control bg-dark" type="file" id="" name = "image3">
+                  </div>
+                  
+                  <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

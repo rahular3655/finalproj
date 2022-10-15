@@ -1,0 +1,287 @@
+{% load static %}
+{% load mptt_tags %}
+<!DOCTYPE html>
+<head>
+  <title>Shoeiee</title>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+    crossorigin="anonymous"/>
+  <link rel="stylesheet" href="{% static '1nonly/k/style.css' %}" type = 'text/css'/>
+  <link rel="stylesheet" href="{% static 'dist1/css/tree.css' %}" type = 'text/css'/>
+  <link rel="jssheet" href="{% static 'dist1/js/tree.js' %}" type = ''/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous" />
+  <!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+  rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.css"
+  rel="stylesheet"
+/>
+  
+  <link rel="stylesheet" href="{% static '1nonly/user/css/style.css' %}" type = 'text/css'/>
+  {% comment %} <link rel="stylesheet" href="{% static '1nonly/css/style.css' %}" type = 'text/css'/> {% endcomment %}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-md navbar-light bg-light main-menu" style="box-shadow:none">
+  <div class="container">
+
+    <button type="button" id="sidebarCollapse" class="btn btn-link d-block d-md-none">
+                <i class="bx bx-menu icon-single"></i>
+            </button>
+
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <h1 class="font-weight-bold">Shoeiee</h1>
+    </a>
+
+    <ul class="navbar-nav ml-auto d-block d-md-none">
+      <li class="nav-item">
+        <a class="btn btn-primary-link" href=""><i class="fa fa-cart-shopping">cart</i><span class="badge badge-pill badge-danger notify"></span></a>
+      </li>
+    </ul>
+
+    <div class="collapse navbar-collapse">
+      <form action="{% url 'search' %}" class="form-inline my-2 my-lg-0 mx-auto" method="GET">
+        <input class="form-control" type="search" placeholder="Search for products..." aria-label="Search" name="keyword">
+        <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="btn btn-link rounded-square border" href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> <span class="badge badge-pill badge-danger notify">{{cart_count}}</span></a>
+        </li>
+        {% if 'username' not in request.session %}
+        <li class="nav-item ml-md-3">
+          <a class="btn btn-primary" href="{% url 'login' %}"><i class="bx bxs-user-circle mr-1"></i> Log In / Register</a>
+        </li>
+        {% elif user.is_authenticated %}
+        <li class="nav-item ml-md-3">
+          <a  class="btn btn-link badge badge-pill rounded border" href="{% url 'userhome' %}"><i class="bx bxs-user-circle mr-1"><img style="height:30px;width:30px;" src="https://cdn-icons-png.flaticon.com/512/1144/1144709.png"></i></a>
+        </li>
+        <li class="nav-item ml-md-3">
+          <a class="btn btn-primary" href="{% url 'signout' %}"><i class="bx bxs-user-circle mr-1"></i> Signout</a>
+        </li>
+        {% else %}
+        <li class="nav-item ml-md-3">
+          <a  class="btn btn-link badge badge-pill rounded border" href="{% url 'userhome' %}"><i class="bx bxs-user-circle mr-1"><img style="height:30px;width:30px;" src="https://cdn-icons-png.flaticon.com/512/1144/1144709.png"></i></a>
+        </li>
+        <li class="nav-item ml-md-3">
+          <a class="btn btn-primary" href="{% url 'signout' %}"><i class="bx bxs-user-circle mr-1"></i> Signout</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+<nav class="navbar navbar-expand-md navbar-light bg-light sub-menu">
+  <div class="container">
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'store' %}">Explore</a>
+        </li>
+
+          {% comment %} {% recursetree category %} {% endcomment %}
+        {% comment %} <li class="nav-item">
+          <a class="nav-link" href="/category/{{ node.id }}/{{ node.slug }}">{{ node.category_name }}</a>
+         </li>  {% endcomment %}
+         {% comment %} {% endrecursetree %} {% endcomment %}
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="#">WOMEN</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">KID</a>
+        </li> -->
+        <!-- <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Support
+                        </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Delivery Information</a>
+            <a class="dropdown-item" href="#">Privacy Policy</a>
+            <a class="dropdown-item" href="#">Terms & Conditions</a>
+          </div>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="#">About US</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="search-bar d-block d-md-none">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <form class="form-inline mb-3 mx-auto">
+          <input class="form-control" type="search" placeholder="Search for products..." aria-label="Search">
+          <button class="btn btn-success" type="submit"><i class="bx bx-search"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="wrapper">
+  {% block content %}
+
+
+  {% endblock %}
+</div>
+
+
+
+      {% comment %} ///footer section starts here {% endcomment %}
+    <!-- Footer -->
+<footer class="text-center text-lg-start bg-white text-muted">
+    <!-- Section: Social media -->
+    <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+      <!-- Left -->
+      <div class="me-5 d-none d-lg-block">
+        <span>Get connected with us on social networks:</span>
+      </div>
+      <!-- Left -->
+  
+      <!-- Right -->
+      <div>
+        <a href="" class="me-4 link-grayish">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="" class="me-4 link-grayish">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="" class="me-4 link-grayish">
+          <i class="fab fa-google"></i>
+        </a>
+      </div>
+      <!-- Right -->
+    </section>
+    <!-- Section: Social media -->
+  
+    <!-- Section: Links  -->
+    <section class="p-1">
+      <div class="container  text-center text-md-start mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+            <!-- Content -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              <i class="fas fa-gem me-3 text-grayish"></i>Shoeiee
+            </h6>
+            <p>
+              Here you can use rows and columns to organize your footer content. Lorem ipsum
+              dolor sit amet, consectetur adipisicing elit.
+            </p>
+          </div>
+          <!-- Grid column -->
+  
+          <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              Categories
+            </h6>
+            <p>
+              <a href="#!" class="text-reset">Men</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Women</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Kids</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+  
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              Useful links
+            </h6>
+            <p>
+              <a href="#!" class="text-reset">Pricing</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Settings</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Orders</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">About US</a>
+            </p>
+          </div>
+          <!-- Grid column -->
+  
+          <!-- Grid column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+            <p><i class="fas fa-home me-3 text-grayish"></i> New York, NY 10012, US</p>
+            <p>
+              <i class="fas fa-envelope me-3 text-grayish"></i>
+              info@example.com
+            </p>
+            <p><i class="fas fa-phone me-3 text-grayish"></i> + 01 234 567 88</p>
+            <p><i class="fas fa-print me-3 text-grayish"></i> + 01 234 567 89</p>
+          </div>
+          <!-- Grid column -->
+        </div>
+        <!-- Grid row -->
+      </div>
+    </section>
+    <!-- Section: Links  -->
+  
+    <!-- Copyright -->
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+      © 2022 Copyright:
+      <a class="text-reset fw-bold" href="https://mdbootstrap.com/">Shoeiee</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
+  <!-- Footer -->
+  </section>
+  <script src="https://kit.fontawesome.com/5e84cc872a.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/5e84cc872a.js" crossorigin="anonymous"></script>
+  <script src ="{% static '1nonly/js/main.js' %}" ></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script> 
+   <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+  <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://unpkg.com/htmx.org@1.8.0"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AeXseT9i7wC4LvVJFbI049EK_BebqtWVUgJjDCFuaIWwtqPUt2wDSXw8-svi42mc83Nr5oFzxgsEihZV&currency=USD"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  
+
+</body>

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+
+
+
+{% block content %}
+<br>
+
+<div class="d-flex justify-content-center align-items-center container">
+    <div class="card py-5 px-3">
+<form  method="POST" action="{% url 'otp_ver' %}">
+  {% csrf_token %}
+    <label for="phone">Enter a phone number:</label><br><br>
+    <input type="text" id="phonenumber" name="phonenumber" placeholder="123-45-678"  required><br><br>
+    <small>Format: +91 ..</small><br><br>
+    <input type="submit">
+  </form>
+</div>
+</div>
+<br>
+
+
+{% endblock %}

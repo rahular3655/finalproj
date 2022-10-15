@@ -1,0 +1,71 @@
+{% extends 'adminbase.html' %}
+
+{% block content %}
+<div class="content-header sty-one">
+  <h1 class="text-black">Category</h1>
+  <ol class="breadcrumb">
+    <li><a href="adminhome">Home</a></li>
+    <li class="sub-bread"><i class="fa fa-angle-right"></i>Categories Management</li>
+    <li><i class="fa fa-angle-right"></i>View Category</li>
+  </ol>
+</div>
+<td><a href="{% url 'addcategory'%}"><button type="submit" class="btn btn-warning">Add Category</button></a></td>
+
+<div class="table-responsive">
+  <table class="table table-hover" style="margin-left: 82px;margin-top: 48px;max-width: 87%;">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Category name</th>
+        <th scope="col">Description</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+
+      </tr>
+    </thead>
+    <tbody style="background-color:#989898;">
+      {% for x in values %}
+      <tr>
+        <th scope="row">{{x.id}}</th>
+        <td>{{x.category_name}}</td>
+        <td>{{x.description}}</td>
+        <td>{{x.image}}</td>
+
+        <td><a href="deletecategory/{{ x.id }}"><button type="submit" class="btn btn-danger"
+              onclick="return confirm('Are you sure to delete?')">Delete</button></a></td>
+              <td><a href="editcategory/{{x.id}} "><button type="submit" class="btn btn-warning">Edit</button></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function delete(){
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this imaginary file!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then(() => {
+      if () {
+        window.location.href = "../adminprev/deletecategory/"+id
+        swal("Poof! Your imaginary file has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Your imaginary file is safe!");
+      }
+    });
+  }
+</script>
+
+
+{% endblock %}

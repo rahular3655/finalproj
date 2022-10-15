@@ -1,0 +1,101 @@
+{% extends 'adminss/adminbase.html' %}
+
+{% block content %}
+
+
+            <!-- Table Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Products</h6>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">variations</th>
+                                        <th scope="col">variations value</th>
+                                        <th scope="col">Status</th>
+                                        <th></th>
+                                        <th></th>
+                              
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for x in variations %}
+                                      <tr>
+                                        <th scope="row"> {{x.id}}</th>
+                                        <td>{{x.product |lower}}</td>
+                                        
+                                        <td>{{x.variation_category}}</td>
+                                        <td>{{x.variation_value}}</td>
+                                        <td>{{x.is_active}}</td>
+                                        <td><a href="{% url 'editvariation' x.id %}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
+                                        <td><button onclick="deletes({{ x.id }})" class="btn btn-danger">Delete</button></td>
+                                        
+                                      </tr>
+                                      {% endfor %}
+                              
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                {% if variations.has_other_pages %}
+                <div class="btn-toolbar justify-content-center"  role="toolbar">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        {% if variations.has_previous %}
+                        <button type="button" class="btn btn-primary"><a href="?page={{variations.previous_page_number}}" tabindex="-1" aria-disabled="true">Previous</a></button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary" tabindex="-1" aria-disabled="true" disabled="True">Previous</button>
+                        {% endif %}
+
+                        {% for i in variations.paginator.page_range %}
+                            {% if variations.number == i %}
+                                <button type="button" class="btn btn-primary">{{i}}</button>
+                            {% else %}
+                                <button type="button" class="btn btn-primary"><a href="?page={{i}}">{{i}}</a></button>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if variations.has_next %}
+                        <button type="button" class="btn btn-primary"><a href="?page={{variations.next_page_number}}">Next</a></button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary">Next</button>
+                        {% endif %}
+                        
+                    </div>
+                <div>
+                    {% endif %}
+            </div>
+            <!-- Table End -->
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+            <script>
+                function deletes(id){
+                  console.log(id,'daefsrrtgrtghty')
+                  swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this file!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                  })
+                  .then((willDelete) => {
+                    if (willDelete) {
+                      window.location.href =
+                       "../deletevariation/" +id
+                      swal("Poof! Your imaginary file has been deleted!", {
+                        icon: "success",
+                      });
+                    } else {
+                      swal("Your file is safe!");
+                    }
+                  });
+                }
+              </script>
+
+
+        {% endblock %}
+

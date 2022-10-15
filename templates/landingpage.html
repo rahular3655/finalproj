@@ -1,0 +1,115 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container mt-5">
+  <h2 style="text-align: center">EXCLUSIVES</h2>
+  <div
+    id="carouselExampleSlidesOnly"
+    style="text-align: center"
+    class="carousel slide mt-5"
+    data-ride="carousel"
+  >
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          class="d-block w-100 img-fluid"
+          src="{% static 'essentials/sport-shoes-sale-banner-1-5fe0c471dbecb.jpg' %}"
+          alt="First slide"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          class="d-block w-100 img-fluid"
+          src="{% static 'essentials/33e413340c3a69c9869fcf9c978ad1e8.jpg' %}"
+          alt="Second slide"
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          class="d-block w-100 img-fluid"
+          src="{% static 'essentials/depositphotos_268017116-stock-illustration-modern-banner-template-for-shoes.jpg' %}"
+          alt="Third slide"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+<section class="container-fluid pt-0">
+  <section class="p-2" style="background-color: #eee">
+    <div class="text-center container py-2">
+      <h2 class="mt-1 mb-2"><strong>Our Collection</strong></h2>
+      <p style="font-size: 1rem;">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy <br>
+      Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical</p>
+      <br>
+      <div class="row">
+        {% for product in products %}
+        {% if forloop.counter <= 6 %}
+
+        <div class="col-lg-4 col-md-12 mb-4">
+          <div class="card rounded border" style="width: 18rem">
+            <div
+              class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+              data-mdb-ripple-color="light"
+            >
+              <a href="{{ product.get_url }}">
+                <img class="img-fluid img-thumbnail"
+                  style="width: 280px; height: 230px"
+                  src="{{ product.image.url }}"
+                />
+              </a>
+              <a href="#!">
+                <div class="mask">
+                  <div
+                    class="d-flex justify-content-start align-items-end h-100"
+                  >
+                    <h5><span class="badge bg-primary ms-2">New</span></h5>
+                  </div>
+                </div>
+                <div class="hover-overlay">
+                  <div
+                    class="mask"
+                    style="background-color: rgba(251, 251, 251, 0.15)"
+                  ></div>
+                </div>
+              </a>
+            </div>
+            <div class="card-body">
+              <a href="{{ product.get_url }}" class="text-reset">
+                <h5 class="card-title mb-3">{{ product.product_name }}</h5>
+              </a>
+              <a href="" class="text-reset">
+                <p>{{ product.category }}</p>
+              </a>
+              {% if product.discount %}
+              <del>Rs.{{ product.price }}</del>
+              <h6 class="mb-3">Rs.{{ product.discount }}</h6>
+              {% else %}
+              <h6 class="mb-3">Rs.{{ product.price }}</h6>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        
+      </div>
+      <div style="" class="container justify-content-center" style="width: 100px; color: #4DB6AC;"><button type="button" class="btn btn-outline-success">View all products</button></div>
+    </div>
+  </section>
+</section>
+<div class=" card bg-dark text-white" >
+  <img src="{% static 'essentials/resize-banner-servis.webp' %}" class="img-fluid" alt="Stony Beach"/>
+  <div class="card-img-overlay " style="background-color: rgba(0, 0, 0, 0.1)">
+    <div class="ml-4" style="margin-top: 500px;">
+    <h1 class="card-title">Summer Offer</h1>
+    <p class="card-text">
+      This is a wider card with supporting text below as a natural lead-in to additional
+      content. This content is a little bit longer.
+    </p>
+    <p class="card-text">Last updated 3 mins ago</p>
+    <button type="button" class="btn btn-danger btn-rounded">Buy NOW</button>
+  </div>
+  </div>
+</div>
+
+{% endblock %}

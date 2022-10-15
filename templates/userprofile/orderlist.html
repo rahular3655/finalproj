@@ -1,0 +1,115 @@
+{% extends '../userprofile/base.html' %}
+{% block sub_content %}
+
+<table class="table table-hover table-warning">
+    <thead>
+      <tr>
+        <th scope="col">Ordernumber</th>
+        <th scope="col">Item</th>
+        <th scope="col">Total</th>
+        <th scope="col">Payment</th>
+        <th scope="col">Status</th>
+        <th scope="col">Manage</th>
+        
+      </tr>
+    </thead>
+    {% for x in orderlist %}
+        
+    <tbody>
+      <tr>
+        <th scope="row">{{ x.order.order_number }}</th>
+        <td><div>
+            <a href="{{ product.get_url }}" ><img src="{{ x.product.image.url }}" alt="" style="height:50px;width:50px;"/></a>
+        </div></td>
+        <td>{{ x.order.order_total }}</td>
+        <td>{{ x.payment.payment_method }}</td>
+        {% if x.order.status == "Processing" %}
+        <td>{{ x.order.status }}</td>
+        <td><button onclick="cancel({{x.order.id}})" type="submit" class="btn btn-outline-danger">Cancel</button></td>
+        {% elif x.order.status == "Shipped" %}
+        <td>{{ x.order.status }}</td>
+        <td><button onclick="cancel({{x.order.id}})" type="submit" class="btn btn-outline-danger">Cancel</button></td>
+        {% elif x.order.status == "Delivered" %}
+        <td>{{ x.order.status }}</td>
+        <td><button onclick="returnn({{x.order.id}})" type="submit" class="btn btn-outline-info">Return</button></td>
+        {% elif x.order.status == "Cancelled" %}
+        <td>{{ x.order.status }}</td>
+        <td>Order is cancelled</td>
+        {% elif x.order.status == "Returned" %}
+        <td>{{ x.order.status }}</td>
+        <td>Order is returned</td>
+        {% else %}
+        <td>{{ x.order.status }}</td>
+        <td><button onclick="cancel({{x.order.id}})" type="submit" class="btn btn-outline-danger">Cancel</button></td>
+        {% endif %}
+        <td>
+          <form action="{% url 'invoice_download' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" id="order_number" name="order_number" style="display: none;" class="datechk form-control" value="{{x.order.order_number}}" >
+            <input type="text" id="payment_id" name="payment_id" style="display: none;" class="datechk form-control" value="{{x.payment.payment_id}}" >
+            <button type="submit" class="btn  btn-dark " >
+              <span >
+                Invoice
+      
+              </span>
+            </button>
+            </form>
+        </td>
+      </tr>
+    </tbody>
+    {% endfor %}
+  </table>
+
+  
+  <script>
+
+    function cancel(id){
+      swal({
+        title: "Are you sure?",
+        text: "Once Cancel the Order, you will not be able to recover this item!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          window.location.href = "../userprofile/cancelorder/"+id
+  
+          swal("Done! Your Order is Cancelled!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your item is safe!");
+        }
+      });
+    }
+
+  </script>
+  <script>
+    function returnn(id){
+      swal({
+        title: "Are you sure?",
+        text: "Once return the Order, you will not be able to recover this item!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          window.location.href = "../userprofile/returnord/"+id
+  
+          swal("Done! Your Order is Cancelled!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your item is safe!");
+        }
+      });
+    }
+  </script>
+  
+
+  
+  
+
+{% endblock %}

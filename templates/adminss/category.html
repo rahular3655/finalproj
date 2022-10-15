@@ -1,0 +1,79 @@
+{% extends 'adminss/adminbase.html' %} 
+{% block content %}
+
+<!-- Table Start -->
+<div class="table-responsive" style="margin-top: 150px; margin-left: 10%">
+  <div class="container-fluid pt-4 px-4">
+    <div class="row">
+      <div class="col-sm-12 col-lg-8">
+        <div class="bg-secondary rounded h-100 p-4">
+          <h5 class="mb-4">Category</h5>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Category name</th>
+                <th scope="col">Description</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+
+              </tr>
+            </thead>
+            <tbody>
+              {% for x in values %}
+              <tr>
+                <th scope="row">{{x.id}}</th>
+                <td>{{x.category_name}}</td>
+                <td>{{x.description}}</td>
+                <td>{{x.image}}</td>
+
+                <td>
+                  
+                    <button
+                      type="submit"
+                      class="btn btn-danger"
+                      onclick="deletes('{{ x.id }}')"
+                    >
+                      Delete
+                    </button>
+                  
+                </td>
+                <td>
+                <a href="{% url 'editcategory' x.id %}" type="button" class="btn btn-light">Edit</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function deletes(id){
+      console.log(id,'daefsrrtgrtghty')
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this imaginary file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          window.location.href =
+           "../deletecategory/" +id
+          swal("Poof! Your imaginary file has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your imaginary file is safe!");
+        }
+      });
+    }
+  </script>
+  
+<!-- Table End -->
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'adminss/adminbase.html' %}
+
+{% block content %}
+
+
+            <!-- Table Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Products</h6>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">price</th>
+                                        <th scope="col">stock</th>
+                                        <th scope="col">category</th>
+                                        <th scope="col">image</th>
+                                        <th></th>
+                                        <th></th>
+                              
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for x in theproduct %}
+                                      <tr>
+                                        <th scope="row"> {{x.id}}</th>
+                                        <td>{{x.product_name |lower}}</td>
+                                        
+                                        <td>{{x.price}}</td>
+                                        <td>{{x.stock}}</td>
+                                        <td>{{x.category}}</td>
+                              
+                                        <td><img src="{{x.image.url}}" alt="" class="img-fluid img-thumbnail" style="width:60px; height:60px"></td>
+                                        <td><a href="{% url 'editproduct' x.id %}"><button type="submit" class="btn btn-warning">Edit</button></a></td>
+                                        <td><button onclick="deleteproduct({{ x.id }})" class="btn btn-danger">Delete</button></td>
+                                        
+                                      </tr>
+                                      {% endfor %}
+                              
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                {% if theproduct.has_other_pages %}
+                <div class="btn-toolbar justify-content-center"  role="toolbar">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        {% if theproduct.has_previous %}
+                        <button type="button" class="btn btn-primary"><a href="?page={{theproduct.previous_page_number}}" tabindex="-1" aria-disabled="true">Previous</a></button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary" tabindex="-1" aria-disabled="true" disabled="True">Previous</button>
+                        {% endif %}
+
+                        {% for i in theproduct.paginator.page_range %}
+                            {% if theproduct.number == i %}
+                                <button type="button" class="btn btn-primary">{{i}}</button>
+                            {% else %}
+                                <button type="button" class="btn btn-primary"><a href="?page={{i}}">{{i}}</a></button>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if theproduct.has_next %}
+                        <button type="button" class="btn btn-primary"><a href="?page={{theproduct.next_page_number}}">Next</a></button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary">Next</button>
+                        {% endif %}
+                        
+                    </div>
+                <div>
+                    {% endif %}
+            </div>
+            <!-- Table End -->
+
+
+        {% endblock %}

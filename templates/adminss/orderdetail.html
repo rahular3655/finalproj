@@ -1,0 +1,62 @@
+
+{% extends 'adminss/adminbase.html' %}
+
+{% block content %}
+
+
+            <!-- Table Start -->
+            <div class="table-responsive" >
+            <div class="container-fluid pt-4 px-4">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Orders</h6>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
+                                        <th scope="col"></th>                            
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                            
+                                    <tr>
+                                      <th scope="row">{{values.order_number}}</th>
+                                      <td>{{values.product}}</td>
+                                      <td>{{values.quantity}}</td>
+                                      <td>{{values.status}}</td>
+                                      <form action="{% url 'product_change_status' values.order.id  %}" method="POST">
+                                        {% csrf_token %}
+                                      <td><select class="form-select form-select-sm mb-3" name="status" aria-label=".form-select-sm example">
+                                        <option selected>Open this select menu</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                        <option value="Confirmed">Confirmed</option>
+                                        <option value="Shipped">Shipped</option>
+                                        <option value="Processing">Processing</option>
+                                        <option value="Out For Devilery">Out For Devilery</option>
+                                        <option value="Delivered">Delivered</option>
+                                    </select></td>
+                                      <td></td>
+                                      <td><a href=""><button type="submit" class="btn btn-warning">submit</button></a></td>
+                                    </form>
+                                    </tr>
+                                    
+                                  
+                                    
+                                  </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+          
+            <!-- Table End -->
+{% endblock %}
