@@ -1,5 +1,3 @@
-from itertools import product
-from tkinter import CASCADE
 from django.db import models
 from accounts.models import *
 from products.models import *
