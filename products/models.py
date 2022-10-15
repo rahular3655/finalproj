@@ -1,12 +1,7 @@
-from tkinter import CASCADE
-from unicodedata import category
 from django.urls import reverse
-import code
 from django.db import models
-from pickle import TRUE
 from categories.models import Categories
-from django.utils.text import slugify
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
 
 # Create your models here.
     
