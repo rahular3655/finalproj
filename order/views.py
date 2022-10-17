@@ -174,7 +174,7 @@ def place_order(request,total=0,quantity=0):
             if "coupon_code" in request.session:
                 coupon_code = request.session['coupon_code']
                 coupon= Coupon.objects.get(coupon_code=coupon_code)
-                request.session['coupon']
+                request.session['coupon_code']
                 reduction=coupon.discount
             else:
                 reduction = 0
