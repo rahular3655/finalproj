@@ -120,10 +120,10 @@ WSGI_APPLICATION = 'shoeieeproj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mainproject',
+        'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'rarams3655',
-        'HOST': 'localhost',
+        'HOST': 'database-1.cwyrvcebwchh.ap-northeast-1.rds.amazonaws.com',
         'PORT': '5432',
         
     }
