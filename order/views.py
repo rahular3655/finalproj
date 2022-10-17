@@ -1,15 +1,18 @@
 import datetime
-from django.shortcuts import render,redirect
-from cart.models import *
-from .models import *
-from .forms import OrderForm
-from products.models import *
 import json
-from django.http import JsonResponse
-from shoeieeproj.views import home
+
 import razorpay
-from django.views.decorators.cache import cache_control
 from django.conf import settings
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.views.decorators.cache import cache_control
+
+from cart.models import *
+from products.models import *
+from shoeieeproj.views import home
+
+from .forms import OrderForm
+from .models import *
 
 # Create your views here.
 
