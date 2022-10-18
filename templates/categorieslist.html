@@ -1,0 +1,164 @@
+
+{% extends 'sidebar.html' %}
+{% block content %}
+{% load mptt_tags %}
+                      
+ 
+  
+
+<header class="border-bottom mb-4 pb-3">
+  <div class="form-inline">
+    <span class="mr-md-auto">found <b>{{ product_count }}</b> items found </span>
+  </div>
+</header>
+
+
+<div class="row">
+  <div class="col-md-2 pl-5">
+    <div class="container-fluid">
+
+    <div class="accordion accordion-flush fluid" id="accordionFlushExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+            FILTER &nbsp;<div class="fluid"><i class="fa-solid fa-bars-staggered"></i></div>
+          </button>
+        </h2>
+       
+        <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">
+            <div class="row">
+              <ul id="nav-tree">
+
+                
+                <li id="li2">
+                  <a>
+                    <h5>Category</h5>
+                  </a>
+                  <ul>
+                      {% recursetree category %}
+                          <li>
+                              <a href="/category/{{ node.id }}/{{ node.slug }}">{{ node.category_name }}</a>
+                              {% if not node.is_leaf_node %}
+                                  <ul class="children">
+                                      {{ children }}
+                                  </ul>
+                              {% endif %}
+                          </li>
+                      {% endrecursetree %}
+                                    
+                      </ul>
+                    </li>
+                  </ul>
+                
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+
+    
+  </div>
+</div>
+  <div class="col-md-10">
+    <div class="container-fluid">
+        <div class="container py-5">
+            <div class="row">
+              <div class="col-lg-10 ">
+          
+
+                {% for rs in product %}
+
+                <ul class="list-group shadow">
+                  <li class="list-group-item">
+                    <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                      <div class="media-body order-2 order-lg-1">
+                        <h5 class="mt-0 font-weight-bold mb-2">{{ rs.product_name }}</h5>
+                        <p class="font-italic text-muted mb-0 small">{{ rs.description }}</p>
+
+                        <div class="d-flex align-items-center justify-content-between mt-1">
+                            {% if rs.discount %}
+                            <del>Rs.{{ rs.price }}</del>
+                            <h6 class="font-weight-bold my-2"><span style="color:yellow;">Offer Price</span> <br> Rs.{{ rs.discount }}</h6>
+                            {% else %}
+                          <h6 class="font-weight-bold my-2">Rs.{{ rs.price }}</h6>
+                          {% endif %}
+                          
+                          <ul class="list-inline small">
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star text-success"></i></li>
+                            <li class="list-inline-item m-0"><i class="fa fa-star-o text-gray"></i></li>
+                          </ul>
+                        </div>
+                        <a href="{% url 'add_to_wishlist' rs.id %}"  type="button" class="btn btn-danger">Add to Wishlist</a>
+                      </div><div><a href="{{ rs.get_url }}"><img style="height:150px;" src="{{ rs.image.url }}" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2"></a>
+                      
+                    </div>
+                  </li>
+                </ul>
+
+                {% endfor %}
+                
+                <!-- End -->
+              </div>
+            </div>
+          </div>
+          
+  
+  </nav>
+  
+</div>
+</div>
+</div>
+
+
+
+
+
+<script>
+
+ 
+
+
+  function addcart(id){
+    swal({
+      title: "Done",
+      text: "Item added to cart !",
+      icon: "success",
+      button: "OK",
+    })
+    .then(()=> { 
+      
+      window.location.href = "../cart/add_cart/"+id
+  });
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+  window.nav = new NavTree("#nav-tree", {
+    groupOpenIconClass: "fas",
+    groupOpenIcon: "fa-chevron-down",
+    groupCloseIconClass: "fas",
+    groupCloseIcon: "fa-chevron-right",
+    linkIconClass: "fas",
+    linkIcon: "fa-link",
+    iconWidth: "25px",
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  window.nav = new NavTree("#nav-tree", {
+    showEmptyGroups: true,
+  });
+});
+</script>
+
+{% endblock %}
+
+
