@@ -1,16 +1,19 @@
 import os
 import random
-from django.shortcuts import render,redirect
-from accounts.models import accounts
-from django.contrib import messages
-from django.contrib.auth import authenticate,login,logout
-from django.contrib import messages,auth
+
+from django.conf import settings
+from django.contrib import auth, messages
+from django.contrib.auth import authenticate, login, logout
+from django.http import JsonResponse
+from django.shortcuts import redirect, render
 from twilio.rest import Client
-from django.conf import settings 
-from cart.models import Cart,Cartitem
-from products.views import *
+
+from accounts.models import accounts
+from cart.models import Cart, Cartitem
 from cart.views import _cart_id
+from products.views import *
 from shoeieeproj.views import home
+
 
 # Create your views here.
 def signin(request):

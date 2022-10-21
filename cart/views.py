@@ -202,11 +202,16 @@ def remove_cart(request,product_id,cart_item_id):
         if cart_item.quantity >1:
             cart_item.quantity -= 1
             
+            
             cart_item.save()
+            # if cart_item.quantity<1:
+            #     messages.error (request,"Quantity must be less than 10")
+            #     return HttpResponse('limit')
             q= cart_item.quantity  
         else :
             
-            cart_item.delete()   
+            cart_item.delete()
+              
     except:
         pass
     # return HttpResponse(q)

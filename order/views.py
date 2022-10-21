@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.cache import cache_control
 
 from cart.models import *
+from extra.models import CouponUsedUser
 from products.models import *
 from shoeieeproj.views import home
 
@@ -73,6 +74,15 @@ def payments(request,reduced_price=None):
         'order_number': order.order_number,
         'transID' : payment.payment_id,
     }
+    if 'coupon_code' in request.session:
+            coupon=request.session['coupon_code']
+            try:
+                coupon_used = CouponUsedUser(coupon= coupon, user = request.user)
+                coupon_used.save()
+            except Exception as e:
+                print(e, "In except for deleting coupon")
+    if 'coupon_code' in request.session:
+        del request.session['coupon_code']
     return JsonResponse(data)
         
     
@@ -126,15 +136,15 @@ def paymentsrazor(request,reduced_price=None):
         product = Product.objects.get(id=item.product_id)
         product.stock -= item.quantity
         product.save()
-        # if 'coupon' in request.session:
-        #     coupon=request.session['coupon']
+        # if 'coupon_code' in request.session:
+        #     coupon=request.session['coupon_code']
         #     try:
         #         coupon_used = CouponUsedUser(coupon= coupon, user = request.user)
         #         coupon_used.save()
         #     except Exception as e:
         #         print(e, "In except for deleting coupon")
-        # if 'coupon' in request.session:
-        #     del request.session['coupon']
+        # if 'coupon_code' in request.session:
+        #     del request.session['coupon_code']
     
         Cartitem.objects.filter(user=request.user).delete()
     
@@ -156,7 +166,15 @@ def paymentsrazor(request,reduced_price=None):
         except:
             pass
 
-
+        if 'coupon_code' in request.session:
+            coupon=request.session['coupon_code']
+            try:
+                coupon_used = CouponUsedUser(coupon= coupon, user = request.user)
+                coupon_used.save()
+            except Exception as e:
+                print(e, "In except for deleting coupon")
+        if 'coupon_code' in request.session:
+            del request.session['coupon_code']
         return render(request, 'ordercomplete.html' ,context )
         
 
@@ -450,15 +468,7 @@ def cash_on_delivery(request,reduced_price=None):
             product.Is_available = False
         product.save()
         item.delete()
-        # if 'coupon' in request.session:
-        #     coupon=request.session['coupon']
-        #     try:
-        #         coupon_used = CouponUsedUser(coupon= coupon, user = request.user)
-        #         coupon_used.save()
-        #     except Exception as e:
-        #         print(e, "In except for deleting coupon")
-        # if 'coupon' in request.session:
-        #     del request.session['coupon']
+        
     order_product = OrderProduct.objects.filter(user=user,payment = payment )
 
     total = order.order_total
@@ -470,6 +480,15 @@ def cash_on_delivery(request,reduced_price=None):
         'order':order,
         'total': total,    
     }
+    if 'coupon_code' in request.session:
+            coupon=request.session['coupon_code']
+            try:
+                coupon_used = CouponUsedUser(coupon= coupon, user = request.user)
+                coupon_used.save()
+            except Exception as e:
+                print(e, "In except for deleting coupon")
+    if 'coupon_code' in request.session:
+        del request.session['coupon_code']
     return render(request,'ordercomplete.html',context)
             
 
@@ -480,6 +499,7 @@ def paymentpage(request):
 
 @cache_control(no_cache =True, must_revalidate =True, no_store =True)         
 def order_complete (request):
+    
     
     try:
    
@@ -493,7 +513,15 @@ def order_complete (request):
             for i in ordered_products:
                 subtotal += i.product * i.quantity
                 payment = Payment.objects.get(payment_id = transID)
-            
+            if 'coupon_code' in request.session:
+                coupon=request.session['coupon_code']
+                try:
+                    coupon_used = CouponUsedUser(coupon= coupon, user = request.user)
+                    coupon_used.save()
+                except Exception as e:
+                    print(e, "In except for deleting coupon")
+            if 'coupon_code' in request.session:
+                del request.session['coupon_code']
             context = {
                 'order':order,
                 'ordered_products': ordered_products,

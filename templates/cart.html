@@ -292,22 +292,25 @@
   xhttp.open("GET", "up_cart/" + pid+"/"+cid);
   xhttp.send();
   }
-
-
   function minusCart(pid,cid){
     console.log(pid)
     console.log(cid)
     const xhttp = new XMLHttpRequest();
-    xhttp.onload = function() {
+    xhttp.onload = function(){
       cart_details=this.responseText
       cart_d=cart_details.split("/")
 
       document.getElementById("form1"+cid).innerHTML = cart_d[0]
       document.getElementById("related"+cid).innerHTML = cart_d[1]
-    }
+  }
+  
     xhttp.open("GET", "remove_cart/" + pid+"/"+cid);
     xhttp.send();
   }
+
+
+  
 </script>
+
 
 {% endblock %}
