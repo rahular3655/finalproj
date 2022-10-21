@@ -1,14 +1,14 @@
-from django.http import HttpResponse
-
 from django.contrib import messages
-from django.shortcuts import render,redirect,get_object_or_404
-from products.models import *
-from .models import *
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from userprofile.models import *
-from order.models import *
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 
+from order.models import *
+from products.models import *
+from userprofile.models import *
+
+from .models import *
 
 # Create your views here.
 
@@ -209,6 +209,27 @@ def remove_cart(request,product_id,cart_item_id):
             cart_item.delete()   
     except:
         pass
+    # return HttpResponse(q)
+    prod = Product.objects.get(id=product_id)
+    if cart_item.product.discount==None and cart_item.product.category.discount==0:
+        
+        cart_item.product.discount=0
+    elif cart_item.product.discount==0 and cart_item.product.category.discount==None:
+        cart_item.product.category.discount=0
+        
+    if cart_item.product.discount ==0 and cart_item.product.category.discount==0:
+        
+        total=cart_item.quantity*prod.price
+    elif cart_item.product.discount > cart_item.product.category.discount:
+        total = cart_item.quantity*prod.discount
+    else :
+        total = cart_item.quantity* prod.category.discount
+    
+    print(cart_item.quantity)
+    print(int(total))
+    print (type(q))
+    qty=q
+    q=str(q)+"/"+str(total)
     return HttpResponse(q)
 
 

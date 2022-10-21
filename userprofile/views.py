@@ -1,16 +1,18 @@
-from urllib import request
-from django.shortcuts import render,redirect
-from django.shortcuts import get_object_or_404
-from order.models import Order, OrderProduct
-from .models import *
-from accounts.models import * 
-from accounts.views import home, signin
 from django.contrib import messages
-from accounts.views import *
+from django.core.paginator import Paginator
 from django.db.models import Sum
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+
+from accounts.models import *
+from accounts.views import *
+from accounts.views import home, signin
+from order.models import Order, OrderProduct
 from shoeieeproj.views import *
+
+from .models import *
+
 # Create your views here
 
 
@@ -20,13 +22,22 @@ def userhome(request):
         userinfo = shippingaddress.objects.filter(user=request.user)
         print(shippingaddress)
         return render(request,'userprofile/base.html',{'userinfo':userinfo})
+    
+    
+# theproduct = Product.objects.all()
+#     paginator = Paginator(theproduct, 5)
+#     page = request.GET.get('page')
+#     paged_product = paginator.get_page(page)
+#     return render(request,'adminss/products.html',{'theproduct':paged_product})
 
 def orderedlist(request):
     if request.user is not None:
-        
         orderlist = OrderProduct.objects.filter(user=request.user)
+        paginator = Paginator(orderlist, 5)
+        page = request.GET.get('page')
+        paged_order = paginator.get_page(page)
         
-        return render(request,'userprofile/orderlist.html',{'orderlist':orderlist})
+        return render(request,'userprofile/orderlist.html',{'values':paged_order})
     
 
 def cancelorder(request,id):

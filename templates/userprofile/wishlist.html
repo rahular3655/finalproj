@@ -13,9 +13,11 @@
                     <th class="column-2">Product</th>
                     <th class="column-3">Price</th>
                 </tr>
+                {% for wish in wishlist %}
                 <tr class="table_row">
+                    
                     <td class="column-1">
-                        {% for wish in wishlist %}
+                        
                         <input type="hidden" value="{{wish.id}}" class="prod_id">
                         <div class="how-itemcart1">
                             <a href='{{ wish.wished_product.get_url }}'><img style="height:100px;width:100px; " src="{{ wish.wished_product.image1.url }}" alt="IMG"></a>
@@ -25,10 +27,13 @@
                     <td class="column-3">{{wish.wished_product.price}}</td>
                     <td class="column-4">{{ cart_item.sub_total }}</td>
                     <td><a href="{% url 'remove_from_wishlist' wish.id %}" type="button" class="btn btn-outline-warning">Remove From wishlist</a></td>
+                    
                 </tr>
                 {% endfor %}
-                {% endif %}
             </table>
+                
+                {% endif %}
+            
         </div>
     </div>
 </div>

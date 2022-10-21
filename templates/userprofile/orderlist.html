@@ -10,10 +10,11 @@
         <th scope="col">Payment</th>
         <th scope="col">Status</th>
         <th scope="col">Manage</th>
+        <th scope="col">Details</th>
         
       </tr>
     </thead>
-    {% for x in orderlist %}
+    {% for x in values %}
         
     <tbody>
       <tr>
@@ -42,6 +43,10 @@
         <td>{{ x.order.status }}</td>
         <td><button onclick="cancel({{x.order.id}})" type="submit" class="btn btn-outline-danger">Cancel</button></td>
         {% endif %}
+        {% if x.order.status == "Cancelled" or x.order.status == "Returned"  %}
+        <td>
+        </td>
+        {% else %}
         <td>
           <form action="{% url 'invoice_download' %}" method="POST">
             {% csrf_token %}
@@ -55,10 +60,41 @@
             </button>
             </form>
         </td>
+        {% endif %}
       </tr>
     </tbody>
     {% endfor %}
+    
+      
   </table>
+  {% if values.has_other_pages %}
+                <div class="btn-toolbar justify-content-center"  role="toolbar">
+                    <div class="btn-group me-2" role="group" aria-label="First group">
+                        {% if values.has_previous %}
+                        <button type="button" class="btn btn-primary"><a href="?page={{values.previous_page_number}}" tabindex="-1" aria-disabled="true">Previous</a></button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary" tabindex="-1" aria-disabled="true" disabled="True">Previous</button>
+                        {% endif %}
+
+                        {% for i in values.paginator.page_range %}
+                            {% if values.number == i %}
+                                <button type="button" class="btn btn-primary">{{i}}</button>
+                            {% else %}
+                                <button type="button" class="btn btn-primary"><a href="?page={{i}}">{{i}}</a></button>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if values.has_next %}
+                        <button type="button" class="btn btn-primary"><a href="?page={{values.next_page_number}}">Next</a></button>
+                        {% else %}
+                        <button type="button" class="btn btn-primary">Next</button>
+                        {% endif %}
+                        
+                    </div>
+                
+                    {% endif %}
+    
+  
 
   
   <script>

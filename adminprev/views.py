@@ -1,22 +1,21 @@
-from datetime import datetime
-from django.shortcuts import render,redirect
-from django.http import HttpResponse
-from django.contrib.auth import authenticate,login,logout
+import datetime
+
+import xlwt
 from django.contrib import messages
-from accounts.models import accounts
+from django.contrib.auth import authenticate, login, logout
+from django.core.paginator import Paginator
+from django.db.models import Q, Sum
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.template.loader import get_template
 from django.views.decorators.cache import cache_control
+from xhtml2pdf import pisa
+
+from accounts.models import accounts
 from categories.models import Categories
+from extra.models import Coupon, OfferCategory, OfferProduct
 from order.models import Order, OrderProduct, Payment
 from products.models import Product, Variation
-from extra.models import Coupon, OfferCategory, OfferProduct
-from django.core.paginator import Paginator
-from django.template.loader import get_template
-from django.db.models import Q
-from django.db.models import Sum
-import datetime
-from xhtml2pdf import pisa
-import xlwt
-
 
 # Create your views here.
 
@@ -693,7 +692,10 @@ def export_pdf(request):
 
 
 import csv
+
 from django.http import HttpResponse
+
+
 def download_csv(request):
     response = HttpResponse(content_type = 'text/csv')
     response['Content-Disposition'] = 'attachment; filename=SalesReport' + str(datetime.datetime.now())+'.csv'

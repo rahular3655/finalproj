@@ -93,7 +93,7 @@
         {% endfor %}
         
       </div>
-      <div style="" class="container justify-content-center" style="width: 100px; color: #4DB6AC;"><button type="button" class="btn btn-outline-success">View all products</button></div>
+      <div style="" class="container justify-content-center" style="width: 100px; color: #4DB6AC;"><a href="{% url 'store' %}"><button type="button" class="btn btn-outline-success">View all products</button></a></div>
     </div>
   </section>
 </section>
@@ -107,7 +107,7 @@
       content. This content is a little bit longer.
     </p>
     <p class="card-text">Last updated 3 mins ago</p>
-    <button type="button" class="btn btn-danger btn-rounded">Buy NOW</button>
+    <a href="{% url 'store' %}"><button type="button" class="btn btn-danger btn-rounded">Buy NOW</button></a>
   </div>
   </div>
 </div>

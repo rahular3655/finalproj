@@ -10,17 +10,17 @@
       <div class="panel">
           <div class="user-heading round">
               <a href="#">
-                  <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                  <img src="https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png" alt="">
               </a>
               <h1>{{user.first_name |upper}} {{user.last_name|upper}}</h1>
               <p>{{user.email|lower}}</p>
           </div>
 
           <div class="list-group">
-            <a href="{% url 'userhome' %}" class="list-group-item list-group-item-action list-group-item-warning active" aria-current="true">
+            <a href="{% url 'userhome' %}" class="list-group-item list-group-item-action list-group-item-warning " >
               Details
             </a>
-            <a href="{% url 'orderedlist' %}" class="list-group-item list-group-item-action list-group-item-warning">Your Orders <span class="badge bg-danger rounded-pill">0</span></a>
+            <a href="{% url 'orderedlist' %}" class="list-group-item list-group-item-action list-group-item-warning">Your Orders </a>
             <a href="{% url 'changepassword' %}" class="list-group-item list-group-item-action list-group-item-warning">Login & Security</a>
             <a href="{% url 'wishlist' %}" class="list-group-item list-group-item-action list-group-item-warning">Wishlist</a>
           </div>
