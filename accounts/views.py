@@ -158,43 +158,38 @@ def otpcheck (request,phone_number):
         
         
 def otp_view(request):
-       
-
-        if request.method == 'POST':
-            phone_number = request.POST.get('phone_number')
-         
-            if accounts.objects.filter(phonenumber = phone_number).exists():
-                users = accounts.objects.get(phonenumber = phone_number)
-                phone_num = "+91"+ phone_number
-                account_sid = settings.ACCOUNT_SID
-                auth_token = settings.AUTH_TOKEN
-               
-                request.session['email'] = users.email
-
-                client=Client(account_sid,auth_token)
-                verification = client.verify \
-                    .services(settings.SERVICE) \
-                    .verifications \
-                    .create(to=phone_num,channel='sms')
-                
-                #messages.success(request,'OTP has been sent to ' + str(phone_num))
-               
-                return JsonResponse({'phone': True,  'phone_number':phone_number}, safe=False)
-
-            elif  len(phone_number) < 10 or len(phone_number) > 10 :
-                 
-                #messages.error(request, '10 digits number required')
-                return JsonResponse({'success': True}, safe=False)
-
-            else:
-                #messages.error(request, 'Invalid Phone Number')
-                return JsonResponse({'success': False}, safe=False)
-
-
-
-
+    
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone_number')
         
-        return render(request, 'otp_view.html ')
+        if accounts.objects.filter(phonenumber = phone_number).exists():
+            users = accounts.objects.get(phonenumber = phone_number)
+            phone_num = "+91"+ phone_number
+            account_sid = settings.ACCOUNT_SID
+            auth_token = settings.AUTH_TOKEN
+            
+            request.session['email'] = users.email
+
+            client=Client(account_sid,auth_token)
+            verification = client.verify \
+                .services(settings.SERVICE) \
+                .verifications \
+                .create(to=phone_num,channel='sms')
+            
+            #messages.success(request,'OTP has been sent to ' + str(phone_num))
+            
+            return JsonResponse({'phone': True,  'phone_number':phone_number}, safe=False)
+
+        elif  len(phone_number) < 10 or len(phone_number) > 10 :
+                
+            #messages.error(request, '10 digits number required')
+            return JsonResponse({'success': True}, safe=False)
+
+        else:
+            #messages.error(request, 'Invalid Phone Number')
+            return JsonResponse({'success': False}, safe=False)
+
+    return render(request, 'otp_view.html ')
        
 
 def otp_login(request, phone_number):

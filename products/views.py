@@ -1,16 +1,15 @@
-from django.shortcuts import render, get_object_or_404
-
-from cart.views import _cart_id
+from django.core.paginator import Paginator
 from django.db.models import Q
+from django.shortcuts import get_object_or_404, render
+from django.views.decorators.cache import cache_control
 
+from cart.models import *
+from cart.views import *
+from cart.views import _cart_id
+from categories.models import Categories
 from extra.models import OfferProduct
 
 from .models import Product
-from categories.models import Categories
-from cart.models import *
-from cart.views import *
-from django.core.paginator import Paginator
-from django.views.decorators.cache import cache_control
 
 
 # Create your views here.
@@ -103,5 +102,5 @@ def search(request):
         'products':products,
         'product_count':product_count,
     }
-    return render(request,'productview.html',context)
+    return render(request,'search.html',context)
                                            
